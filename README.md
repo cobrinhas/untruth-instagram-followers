@@ -25,3 +25,7 @@ dart run
 - Be sure to do this on a throwaway account (totally legal)
 - You can get a user profile ID by opening networking tab of your browser dev-console, and then open the followers list of the target user. The `count` endpoint request is followed by the user ID.
 - This was done with some Portuguese labels, so if you are not Portuguese, the automation will fail on the beggining (I'm still working on this).
+
+### Demo
+
+https://user-images.githubusercontent.com/26190214/182692365-8d807384-e354-4893-8ec7-805a3b74e407.mp4
