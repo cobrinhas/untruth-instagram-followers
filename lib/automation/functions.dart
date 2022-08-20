@@ -15,8 +15,8 @@ Future<Set<User>> fetchAllUsers({
 
   Future<dynamic> fetchUsers() {
     final fetchLimit = 200;
-    final maxIdQueryParameter =
-        users.isNotEmpty ? '&max_id=${users.length}' : '';
+    final maxId = (users.length - (fetchLimit / 2)).toInt().toString();
+    final maxIdQueryParameter = users.isNotEmpty ? '&max_id=$maxId' : '';
 
     final fetchUrl =
         'https://i.instagram.com/api/v1/friendships/$profileId/$usersEndpoint/?count=$fetchLimit$maxIdQueryParameter';
@@ -41,20 +41,32 @@ Future<Set<User>> fetchAllUsers({
   }
 
   while (canRequestMoreUsers) {
-    final response = await fetchUsers();
+    try {
+      final response = await fetchUsers();
 
-    if (response is Map) {
-      canRequestMoreUsers = response.containsKey('next_max_id');
+      if (response is Map) {
+        canRequestMoreUsers = response.containsKey('next_max_id');
 
-      final usersJson = response['users'] as List<dynamic>;
+        final usersJson = response['users'];
 
-      users.addAll(usersJson.map(((e) => User.fromJson(e))));
-    } else {
-      canRequestMoreUsers = false;
-    }
+        if (usersJson != null) {
+          final usersJson = response['users'] as List<dynamic>;
 
-    if (canRequestMoreUsers) {
-      await Future.delayed(delayBetweenRequests);
+          users.addAll(usersJson.map(((e) => User.fromJson(e))));
+        } else {
+          print('Failed to fetch some users... Retrying.');
+
+          canRequestMoreUsers = true;
+        }
+      } else {
+        canRequestMoreUsers = false;
+      }
+
+      if (canRequestMoreUsers) {
+        await Future.delayed(delayBetweenRequests);
+      }
+    } on Object catch (_) {
+      print('Failed to fetch some users... Retrying.');
     }
   }
 
