@@ -19,7 +19,7 @@ const _kProfileIdArgumentHelp =
 const _kOutputModeArgumentName = 'mode';
 const _kOutputModeArgumentAbbreviation = 'm';
 const _kOutputModeArgumentHelp =
-    'Specifies the output mode (jpeg, gif, webm) which results will be formatted';
+    'Specifies the output mode (text, markdown) which results will be formatted';
 
 const _kHeadfulArgumentName = 'headful';
 const _kHeadfulArgumentAbbreviation = 'h';
